@@ -1,0 +1,23 @@
+Which departments within Zus Coffee will be directly involved in the chatbot project?
+(Answer: The IT department, Customer Service team, Marketing, and Operations will be directly involved.)
+
+Can you describe the structure of the team that will manage and maintain the chatbot post-implementation?
+(Answer: A dedicated support team within IT will handle maintenance, updates, and troubleshooting, with input from customer service representatives.)
+
+Are there any external partners or vendors currently involved with your customer service or IT systems?
+(Answer: Yes, we work with a third-party ticketing system provider and a digital marketing agency for our online platforms.)
+
+What specific metrics will you use to measure the success of the chatbot implementation?
+(Answer: Reduction in average response time, number of inquiries handled by the chatbot, and customer satisfaction scores.)
+
+What are the immediate goals you expect to achieve within the first three months post-implementation?
+(Answer: Achieve a 20% reduction in customer service response time and handle at least 1,000 inquiries per month through the chatbot.)
+
+What specific tools and software are currently used in your customer service workflow, and how do they integrate with each other?
+(Answer: We use a proprietary POS system integrated with our ticketing software and a CRM platform for customer data management.)
+Can you provide examples of common integration points where the chatbot will need to interface with your existing systems?
+(Answer: The chatbot will need to access order tracking data from our POS system and update customer profiles in the CRM.)
+What data sources will the chatbot need to access to provide accurate and timely responses to customer inquiries?
+(Answer: Order status from the POS, menu updates from the inventory system, and store locations from our database.)
+Are there any current bottlenecks in data processing or system interactions that the chatbot should address?
+(Answer: dont know, its uncertain we need to check with the client )

@@ -1,0 +1,29 @@
+**1. Which departments or teams will primarily interact with or benefit from the chatbot implementation?**  
+Our customer service team and IT department will primarily interact with and benefit from the chatbot.
+
+**2. What specific key performance indicators (KPIs) will you use to measure the success of the chatbot project?**  
+Reduction in average response time, decrease in live agent workload by 30%, and an increase in customer satisfaction scores by 20%.
+
+**3. Can you provide examples of the most common customer inquiries that the chatbot should handle effectively?**  
+Order status updates, commonly asked questions (how to refund, menu information), store locations, operating hours, and basic complaint redirection (guiding customers to the appropriate channels).
+
+**4. What platforms or tools need to integrate with the new chatbot solution (e.g., CRM, ERP, etc.)?**  
+Our CRM system, existing ZUS app, third-party delivery app APIs (Grab, ShopeeFood, FoodPanda), and Zendesk ticketing system need to integrate with the chatbot.
+
+**5. What data security or compliance requirements must the chatbot solution adhere to?**  
+The chatbot must comply with the Personal Data Protection Act (PDPA) of Malaysia and ensure all customer data is encrypted during transmission and storage.
+
+**6. What is your allocated budget range for the chatbot project?**  
+We have allocated between MYR 50,000 to MYR 150,000 for the development and implementation of the chatbot.
+
+**7. Are there any preferred vendors or technologies you wish to use or avoid for this project?**  
+We prefer using AI solutions compatible with our existing CRM and Zendesk, and aim to avoid proprietary platforms that do not integrate easily with our systems.
+
+**8. How is your customer service team currently structured, and how will their roles change with the implementation of the chatbot?**  
+We have 50 customer service agents handling inquiries; post-chatbot implementation, they will focus more on complex issues and in-store support.
+
+**9. What timeline are you envisioning for the chatbot project from initiation to full deployment?**  
+We aim to have the chatbot fully deployed within six months from the project start date.
+
+**10. How do you currently handle customer complaints that cannot be resolved by your support system, and how should the chatbot manage such cases?**  
+Currently, unresolved complaints are escalated to senior staff via Zendesk; the chatbot should seamlessly transfer these cases to live agents within Zendesk with all relevant information.

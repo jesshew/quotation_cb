@@ -1,0 +1,128 @@
+
+---
+
+**Question:** What AI functionalities are required for your chatbot, such as natural language understanding, sentiment analysis, or advanced multilingual support?
+
+**Answer:** probably just openai 
+
+---
+
+**Question:** Will the chatbot be required to perform actions like modifying order details in the POS system or updating customer profiles in the CRM during a session?
+
+**Answer:** NO
+---
+
+**Question:** On which platforms do you intend to deploy the chatbot (e.g., website, mobile app, Facebook Messenger, WhatsApp)? Which platform should be prioritized based on your customer engagement?
+
+**Answer:** We intend to deploy the chatbot on our website, mobile app, Facebook Messenger, and WhatsApp, with the whatsapp and mobile app being prioritized due to the highest customer engagement in these channels.
+
+---
+
+**Question:** Where do you prefer the chatbot to be hosted (on-premises, cloud, or hybrid)? Does your in-house IT team have preferences or requirements for hosting environments?
+
+**Answer:** We prefer the chatbot to be hosted on the cloud for scalability and reliability, aligning with our in-house IT team's preference for cloud solutions to ensure seamless integration and maintenance.
+
+---
+
+**Question:** Who are the primary user personas that will interact with the chatbot (e.g., first-time customers, repeat customers, high-value clients)? What are their specific needs, such as language preferences or preferred communication channels?
+
+**Answer:** Primary user personas include working customers, students, and regular coffee drinkers who may require multilingual support and prefer interacting through our website or mobile app for convenience and quick service.
+
+---
+
+**Question:** Can you provide examples of end-to-end conversation flows that you expect the chatbot to handle, such as checking an order status or placing a new order?
+
+**Answer:** An example flow includes a customer initiating an order, selecting coffee preferences step-by-step, confirming the order, and then checking the order status; another flow involves a customer asking for store locations and menu updates, with the chatbot providing accurate information seamlessly.
+
+---
+
+**Question:** Will the chatbot need to perform database queries, such as checking menu item availability or retrieving customer order history? If so, how many types of such queries are expected?
+
+**Answer:** Yes, the chatbot will perform multiple database queries, including checking menu item availability, retrieving order history, updating customer profiles, and accessing store locations, covering at least five different query types.
+
+---
+
+**Question:** What are the most frequently asked single-step questions by your customers, such as "What are your store hours?" or "Where is the nearest outlet?" Can you provide examples and the current storage location of their answers?
+
+**Answer:** Common single-step questions include "What are your store hours?", "Where is the nearest outlet?", and "What is the current menu?" Answers are stored in our FAQ database and can be accessed through our CRM system for consistency.
+
+---
+
+**Question:** Do you require the chatbot to process or clean any incoming data, such as standardizing customer input or handling inconsistent data formats before responding?
+
+**Answer:** Yes, the chatbot should standardize customer inputs, handle varying data formats, and ensure data consistency to provide accurate and reliable responses.
+
+---
+
+**Question:** Does the chatbot need to scrape content from any external websites, like competitor prices or market trends, to provide information to users?
+
+**Answer:** No, the chatbot does not need to scrape external websites; 
+
+---
+
+**Question:** Which specific databases will the chatbot need to interact with, and what types of data (e.g., order details, customer profiles) will it retrieve or update?
+
+**Answer:** The chatbot will interact with our POS database for order details, CRM database for customer profiles, inventory database for menu updates, and our ticketing system for managing inquiries and support requests.
+
+---
+
+**Question:** What knowledge resources should the chatbot have access to, such as a list of FAQs, detailed product information, or store locations? How well are these resources structured and maintained?
+
+**Answer:** The chatbot should access our FAQ list, detailed product and menu information, store locations, and order tracking data. These resources are well-structured within our CRM and inventory systems and are regularly updated by our support team. They are stored as PDF or docs right now
+
+---
+
+**Question:** What specific user information or conversation context should be passed to human agents when the chatbot transfers the conversation to ensure continuity and personalization?
+
+**Answer:** the chatbot should pass customer name, order history, current inquiry details, and any previous conversation context to ensure a seamless and personalized handover.
+
+---
+
+**Question:** What are the expected usage volumes for the chatbot on a daily and weekly basis? Are there projections for growth in traffic post-deployment?
+
+**Answer:** We expect the chatbot to handle approximately 3,000 interactions weekly
+
+---
+
+
+**Question:** Can you list the most common single-step questions your customers ask, estimate how many such intents the chatbot should handle, and specify where the answers to these questions are currently stored?
+
+**Answer:** Common single-step questions include "What are your store hours?", "Where is the nearest outlet?", "What is on the current menu?", and "How can I track my order?" The chatbot should handle at least 20 such intents, with answers stored in our FAQ and CRM systems.
+
+---
+
+**Question:** What is the expected number of simultaneous users interacting with the chatbot during peak hours? What capacity is required to handle parallel conversations effectively?
+
+**Answer:** During peak hours, we expect up to 200 simultaneous users; 
+
+---
+
+**Question:** What are your chatbot's expected peak hours, and what is the maximum volume of interactions you anticipate during these periods? Do seasonal factors affect these patterns?
+
+**Answer:** Peak hours are typically 8-10 AM and 5-7 PM on weekdays, with up to 200 interactions per hour. Seasonal factors like holidays may increase interactions
+
+
+**Question:** Beyond managing high inquiry volumes, are there other customer service challenges the chatbot should address? Should the chatbot supplement or replace existing support channels?
+
+**Answer:** nothing for now, but the chatbot will be replacing our huamn agents when theyre ready.
+---
+
+**Question:** Who will be responsible for maintaining and updating the chatbot's knowledge base? How frequently will updates be made, and what processes will be in place to integrate new information?
+
+**Answer:**  IT team will maintain and update the knowledge base monthly 
+---
+
+**Question:** Will the chatbot handle any sensitive customer data, such as payment information or personal details? Are there specific industry regulations or data protection standards it must comply with?
+
+**Answer:** Yes, the chatbot will handle personal details and order information, you need to ensure secure data handling practices to protect customer privacy.
+
+---
+
+**Question:** What procedures should the chatbot follow in case of system failures or downtime, such as notifying users or providing estimated resolution times?
+
+**Answer:** dont know yet
+---
+
+**Question:** Which languages should the chatbot support beyond the multilingual support already mentioned? What tone and personality should the chatbot convey (e.g., friendly, professional)?
+
+**Answer:** The chatbot should support Malay, English, and Chinese to cater to our diverse customer base, and it should convey a friendly yet professional tone that aligns with Zus Coffee’s welcoming brand personality.
