@@ -9,6 +9,8 @@ wheels/
 # virtual environments
 .venv
 myenv/
+chatbot_answers/
+
 
 # ENV
 .env
