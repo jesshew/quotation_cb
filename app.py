@@ -582,11 +582,19 @@ with gr.Blocks(title="Requirements Gathering Chatbot") as demo:
 
     gr.Markdown("# Requirements Gathering Chatbot")
     with gr.Tab(label= "Main"):
-        gr.Markdown("### Instructions for Use - 2 options :")
-        gr.Markdown("1. **Start a New Session**: Begin answering questions for a new project. Please make sure to include the original questions in your replies.")
-        gr.Markdown("2. **Load an Existing Project**: Go to the **Project Status** tab. Select a session using its **Session ID** (e.g. id: 7) to review previous details.")
-        gr.Markdown("**Current Limitation**: Cannot add new answers to exisiting session")
+        gr.Markdown("### Instructions for Use: Two Options")
+        gr.Markdown("1. **Start a New Session**: Begin answering questions for a new project. Ensure to include the original questions in your responses.")
+        gr.Markdown("2. **Load an Existing Project**: Navigate to the **Project Status** tab and select a session using its **Session ID** (e.g., ID: 7) to review previous details.")
+        gr.Markdown("   **Current Limitation**: Cannot add new answers to an existing session.")
 
+        gr.Markdown("### Generating a Quotation")
+        gr.Markdown("After completing either Option 1 or 2, scroll down to generate a quotation. There are three ways to generate it:")
+        gr.Markdown("- Calculations are based on **quantity** and **man-days per unit**. You can modify these values and click **Recalculate** to update the cost/man-days.")
+        gr.Markdown("- Alternatively, you can regenerate the quotation by clicking **Generate Quotation** again.")
+        # gr.Markdown("- **Hacky Feature**: A prompt area allows users to give direct instructions for regeneration.")
+
+        gr.Markdown("### Features in Development")
+        gr.Markdown("- **Gap Analysis**: Analyze the quotation and project requirements to identify limitations and opportunities.")
         with gr.Row():
             start_btn = gr.Button("Start New Session")
             clear_btn = gr.Button("Clear")

@@ -1,0 +1,24 @@
+task_name,unit_type,mandays_per_unit,quantity,remarks,calculated_mandays
+Create Canned Message Flows,Per Flow Type,1.0,6,"Creating flows for six common customer inquiries: Order Status Updates, Refund Processes, Menu Information, Store Locations, Operating Hours, Basic Complaint Redirection",6.0
+Develop Intent Classifier,Per Intent,1.0,1,Intent classifier for menu recommendations,1.0
+Develop RAG-based Flows,Per Flow Type,1.0,1,RAG-based flow for menu recommendations,1.0
+Integrate API Flows,Per Flow Type,1.0,6,"Integrate APIs for ZUS app, Grab, ShopeeFood, FoodPanda, Loyalty Program Database, Email Marketing Tools",6.0
+Integrate CRM System,Per Integration,1.0,1,Integrate with CRM system for customer data management,1.0
+Integrate Ticketing System,Per Integration,1.0,1,Integrate with Zendesk Ticketing System for customer support,1.0
+Implement Output Monitoring and Filtering,One Time,1.0,1,Implement monitoring and redirection of unresolved complaints to live agents,1.0
+Implement Language Translation Services,Per Language,1.0,2,Implement translation services for Bahasa Malaysia and English,2.0
+Validate Language Processing,Per Language,0.5,2,Validate language processing for Bahasa Malaysia and English,1.0
+Implement Language Detection Algorithms,One Time,0.5,1,Implement algorithms to detect user language,0.5
+Create Canned Message Flows,Per Flow Type,1.0,2,Creating flows tailored for Tourists and Elderly customers,2.0
+Integrate Chatbot with Messaging Platforms,Per Integration Point,1.0,5,"Integrate chatbot with Mobile App, WhatsApp, Website, Facebook, Instagram",5.0
+Set Up Server Infrastructure,One Time,1.0,1,Set up server infrastructure to handle high volumes and concurrent users,1.0
+Set Up Staging and Production Environments,One Time,0.75,1,Set up staging and production environments for deployment,0.75
+Deploy System,One Time,1.0,1,Deploy chatbot to production,1.0
+Conduct Performance Testing,One Time,1.0,1,Ensure system can handle 2000 daily interactions and 1000 concurrent conversations,1.0
+Define LLM Output Policies,One Time,0.5,1,Define output policies to ensure compliance with PDPA,0.5
+Conduct Security Testing,One Time,1.0,1,Perform security testing to ensure data protection and compliance with PDPA,1.0
+Set Up Chatbot Dashboard,One Time,0.75,1,Set up administrative dashboard for chatbot management,0.75
+Manage Knowledge Base,One Time,1.0,1,"Manage and update the chatbot's knowledge base with FAQs, store locators, menu details, etc.",1.0
+Implement User Management,One Time,0.75,1,Implement user management features for chatbot admins,0.75
+Set Up Campaign Tracking,One Time,0.75,1,Set up tracking for chatbot-driven marketing campaigns,0.75
+Set Up Chat Memory Management,One Time,1.0,1,Set up summary and long-term memory management for chatbot,1.0

@@ -1,0 +1,87 @@
+#Requirement 1
+
+Company Background and Industry
+Can you provide some background about your company? Zus Coffee is a Malaysian-based coffee chain with 500 outlets nationwide, offering a variety of food, beverages, and merchandise. We handle both offline and online orders through our app / third party delivery apps.
+Which industry do you operate in, and what is your company’s niche or specialization? We operate in the Food and Beverage industry, specializing in premium coffee and a diverse menu that caters to local Malaysian tastes.
+Who are your primary customers? Our primary customers are working professionals, students, and coffee enthusiasts across Malaysia.
+What are the main objectives you want to achieve? To enhance customer service efficiency, automate common questions / customer service tasks, and implement scalable solutions like a chatbot to support our growing operations.
+What key features or functionalities do you need? A chatbot that can handle common inquiries, track orders, provide menu recommendations, and resolve customer complaints when possible, or else, redirect to live agent.
+Current Challenges
+What are the biggest challenges your firm is currently facing? Managing high volumes of customer inquiries, especially when most of them are repeated(asking about order update etc), and maintaining consistent service quality across 500 outlets.
+Can you describe your current processes? Currently, customer service is managed through a combination of in-store staff and a basic online support system (live agent), leading to delays and inconsistencies.
+Workflow and System Impact
+How will this solution benefit your firm as a whole? It will streamline customer interactions, reduce response times, automate simple commonly asked questions (ie: delivery app order update, navigate them to the right tab to do what they want),free up staff to focus on in-store customer experience. Doing so will help us reduce live agent cost.
+Existing Workflow or System
+Can you describe your current workflow or system? We utilize a basic Customer Relationship Management (CRM) system for online orders and a separate platform for managing offline operations. Our online orders are processed through our proprietary app and third-party delivery apps, while in-store orders are handled manually by staff. There is minimal integration between these systems, resulting in fragmented data management and limited automation.
+Pain Point Identification
+Where is your current system falling short or causing delays? The lack of integration between online and offline systems leads to delays in order processing and difficulty in providing real-time updates to customers. Additionally, our current support system struggles to handle the high volume of repetitive inquiries, resulting in longer response times and decreased customer satisfaction.
+Are there any parts of the process that are particularly time-consuming/prone to error? Managing repetitive customer inquiries such as order status updates and menu information manually is highly time-consuming and prone to human error. This not only delays response times but also increases the likelihood of incorrect information being provided to customers.
+#Requirement 2 1. Which departments or teams will primarily interact with or benefit from the chatbot implementation?
+Our customer service team and IT department will primarily interact with and benefit from the chatbot.
+
+2. What specific key performance indicators (KPIs) will you use to measure the success of the chatbot project?
+Reduction in average response time, decrease in live agent workload by 30%, and an increase in customer satisfaction scores by 20%.
+
+3. Can you provide examples of the most common customer inquiries that the chatbot should handle effectively?
+Order status updates, commonly asked questions (how to refund, menu information), store locations, operating hours, and basic complaint redirection (guiding customers to the appropriate channels).
+
+4. What platforms or tools need to integrate with the new chatbot solution (e.g., CRM, ERP, etc.)?
+Our CRM system, existing ZUS app, third-party delivery app APIs (Grab, ShopeeFood, FoodPanda), and Zendesk ticketing system need to integrate with the chatbot.
+
+5. What data security or compliance requirements must the chatbot solution adhere to?
+The chatbot must comply with the Personal Data Protection Act (PDPA) of Malaysia and ensure all customer data is encrypted during transmission and storage.
+
+6. What is your allocated budget range for the chatbot project?
+We have allocated between MYR 50,000 to MYR 150,000 for the development and implementation of the chatbot.
+
+7. Are there any preferred vendors or technologies you wish to use or avoid for this project?
+We prefer using AI solutions compatible with our existing CRM and Zendesk, and aim to avoid proprietary platforms that do not integrate easily with our systems.
+
+8. How is your customer service team currently structured, and how will their roles change with the implementation of the chatbot?
+We have 50 customer service agents handling inquiries; post-chatbot implementation, they will focus more on complex issues and in-store support.
+
+9. What timeline are you envisioning for the chatbot project from initiation to full deployment?
+We aim to have the chatbot fully deployed within six months from the project start date.
+
+10. How do you currently handle customer complaints that cannot be resolved by your support system, and how should the chatbot manage such cases?
+Currently, unresolved complaints are escalated to senior staff via Zendesk; the chatbot should seamlessly transfer these cases to live agents within Zendesk with all relevant information.
+
+#Requirement 3
+
+Single-Step Intents: Could you provide additional examples of single-step tasks the chatbot should handle, such as retrieving specific order IDs or providing detailed menu item information? The chatbot can handle tasks like retrieving specific order IDs, providing detailed menu item information, checking store hours, locating the nearest outlet, explaining payment options, and offering basic troubleshooting for the app.
+Hosting and Deployment Needs: Where would you prefer the chatbot to be hosted (on-premises, cloud, or a hybrid solution)? Additionally, do you have an in-house IT team to support the hosting and deployment of the chatbot? We prefer a cloud-based hosting solution for scalability and ease of maintenance. Yes, we have an in-house IT team that can support the deployment and ongoing management of the chatbot
+User Personas: Beyond working professionals, students, and coffee enthusiasts, are there other key user personas the chatbot should cater to? Do these personas have specific needs, such as language preferences or accessibility requirements? Besides working professionals, students, and coffee enthusiasts, the chatbot should also cater to tourists and elderly customers. Tourists might need assistance in English and information about local specialties, while elderly users may benefit from a simpler interface / simpler choice of words.
+Automatic Handover Triggers: What specific user information or conversation history should be shared with live agents when the chatbot escalates a conversation? Are there particular triggers that should initiate a handover to a human agent? When escalating, the chatbot should share the customers order details, previous interactions, and the context of the current issue. Triggers for handover include complex complaints, refund requests, or when the chatbot fails to understand the query after a couple of attempts.
+List of Simple Intents: Besides order status updates and menu information, what other frequently asked questions should the chatbot address? Can you estimate the number of simple intents and provide sample questions? The chatbot should handle around 10 simple intents, such as store locations, operating hours, payment methods, loyalty program details, refund policies, app troubleshooting, ingredient information, current promotions, and delivery options. Sample questions include "What are your operating hours?" and "How do I join the loyalty program?"
+List of Fallback Intents: How should the chatbot handle situations where it fails to understand user queries? After how many failed attempts should the conversation be escalated to a live agent, and what fallback messages should be used? If the chatbot doesnt understand a query, it should respond with, "Im sorry, I didnt quite get that. Could you please rephrase?" After two failed attempts, it should offer to connect the user to a live agent for further assistance.
+List of Multi-Step Intents: Will the chatbot manage complex interactions that involve multiple steps, such as booking a custom order or providing personalized menu recommendations? If so, could you provide sample scenarios?Yes, the chatbot can manage multi-step interactions like customizing an order by selecting coffee type, size, milk options, and add-ons. Another scenario is providing personalized menu recommendations based on past orders and preferences.
+Intermediate Intents (Text to SQL): Does the chatbot need to perform database queries, such as checking inventory levels or pulling specific customer order histories? If yes, how many such intermediate intents are expected?he chatbot needs to perform database queries to check order statuses and retrieve customer order histories. We expect around 3 intermediate intents, including verifying order details, checking inventory for menu items, and accessing past purchase records.
+Conversation Flow: Could you provide example conversation flows for two end-to-end interactions, such as checking order status and providing menu recommendations? Checking Order Status: User: "Where is my order?" Chatbot: "Please provide your order ID." User: "12345" Chatbot: "Your order is being prepared and will be ready in 15 minutes." Providing Menu Recommendations: User: "Im looking for something sweet." Chatbot: "Sure, would you like a beverage or a dessert?" User: "Dessert." Chatbot: "We have brownies, cheesecake, and cookies. Which one would you like?"
+Data Processing: Do you require preprocessing steps to clean and organize existing customer data before integrating with the chatbot? If so, how many documents or data sources need cleaning? i think so, they are pretty scattered and different platform uses different format.
+Existing Knowledge Base Inventory: What existing knowledge resources should the chatbot access, such as FAQs, store locator data, or internal product information? How would you rate the quality and structure of this content? The chatbot should access our FAQs, store locator data, menu details, and order management information. Currently, the quality is moderate; some data needs updating and better structuring to ensure accurate information retrieval.
+Usage Expectations: What are the expected usage volumes for the chatbot on a daily and weekly basis? Do you anticipate significant growth in chatbot interactions over time? We expect around 2,000 interactions daily, with peak times during morning and evening hours
+Concurrent User Load: How many users do you expect to interact with the chatbot simultaneously? What is the required capacity for handling parallel conversations without performance degradation? We expect up to 500 users interacting simultaneously during peak hours. The system should handle at least 1,000 parallel conversations to ensure smooth performance without delays.
+Peak Usage Patterns: What are your expected peak hours for chatbot usage, and what is the maximum interaction volume you anticipate during these periods? Are there seasonal peaks to consider? Peak hours are typically from 8 AM to 10 AM and 5 PM to 7 PM daily, with up to 1,000 interactions per hour. Additionally, seasonal peaks occur during holidays and festive seasons, potentially increasing interaction volume by 30%.
+AI Integration: Beyond handling text-based inquiries, do you require the chatbot to integrate advanced AI features such as speech recognition or image processing? Can you provide specific use cases for these AI capabilities? Just text based for now.
+Platform Needs: Which platforms should the chatbot support (e.g., web, mobile app, social media channels)? Can you specify the expected usage volume for each platform and indicate which should be prioritized? The chatbot should support our mobile app, website, whatsapp, if possible, major social media channels like Facebook and Instagram. The mobile app and whatsapp are the highest priority, followed by the website. Social media channels are less prioritised.
+Language and Tone and Personality: While the chatbot primarily operates in Malaysian languages, are there specific language preferences or dialects it should support? Additionally, what tone should the chatbot use (e.g., friendly, formal, casual) to align with your brand? The chatbot should support Bahasa Malaysia and English, including common dialects used in Malaysia. It should maintain a friendly and approachable tone, reflecting our brands warm and welcoming atmosphere.
+Performance Requirements: What are your expectations regarding the chatbots response times and reliability? How should server capacity and API limits be defined to ensure optimal performance, even during peak traffic periods? respond within 2 seconds
+Feedback Mechanisms Implementation: How would you like to collect user feedback and metrics, such as customer satisfaction scores? Should these be collected after every interaction or randomly, and would you require a dashboard to monitor chatbot performance? Wed like to collect feedback after every interaction with a quick rating and optional comments. Additionally, random feedback prompts can gather more insights. A dashboard to monitor real-time performance metrics and customer satisfaction scores would be essential for continuous improvement.
+Web Scraping Requirements: If the chatbot needs to obtain information from external websites, how many websites and pages would need to be scraped, and how frequently should this data be updated? id ont know, probably our own websites
+#Requirement 4
+
+Data Processing Details: Can you specify the exact number of documents or distinct data sources that need to be cleaned and organized before integrating them with the chatbot?
+Data Processing Details: We need to clean and organize data from three distinct sources:
+CRM data from our existing CRM system. Order history from the ZUS app. Customer support tickets from Zendesk.
+
+Web Scraping Requirements: How many of your own websites and individual pages will the chatbot need to scrape information from, and how frequently should this data be updated? It is uncertain as of now, but at least 1 page.
+Existing Knowledge Base Inventory: Could you provide a comprehensive list of all the knowledge resources the chatbot should access, such as specific FAQs, store locator data, and internal product information? The chatbot should access the following knowledge resources:
+FAQs: Covering common customer inquiries. Store Locator Data: Information on all 500 outlets, including addresses and operating hours. Menu Details: Comprehensive information on all food, beverages, and merchandise. Promotional Information: Current and upcoming promotions and discounts. Internal Product Information: Details on new and existing products for accurate recommendations.
+
+Integration Dependencies: Beyond the mentioned CRM, ZUS app, third-party delivery APIs, and Zendesk, are there any other existing systems or APIs that the chatbot needs to integrate with? Beyond the CRM, ZUS app, third-party delivery APIs (Grab, ShopeeFood, FoodPanda), and Zendesk, the chatbot also needs to integrate with:
+Loyalty Program Database: To access and update customer loyalty points. Email Marketing Tools: For personalized promotions and communications.
+
+Advanced AI Features Consideration: While the chatbot will initially handle text-based inquiries, are there any plans to incorporate advanced AI features like speech recognition or image processing in the future? not for now.
+Performance Monitoring Metrics: Besides the 2-second response time, what specific performance metrics do you intend to monitor to ensure the chatbot operates optimally during both peak and non-peak hours? I have no clue can you suggest please.
+Feedback Dashboard Specifications: What specific types of performance metrics and customer satisfaction scores would you like to display on the real-time dashboard for monitoring the chatbots effectiveness? The real-time dashboard should display: Customer Satisfaction Scores: Based on post-interaction surveys. Interaction Volume: Number of daily and weekly interactions. Common Inquiry Trends: Most frequently asked questions. Resolution Rates: Percentage of issues resolved by the chatbot. Response Times: Average time taken to respond to user queries. Escalation Metrics: Number and percentage of conversations handed over to live agents.
+Handling Additional Sensitive Data: Will the chatbot handle any sensitive or personally identifiable information beyond standard customer interactions, and are there additional compliance requirements to consider? Not sure, but customer data should be encrypted, always

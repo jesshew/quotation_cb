@@ -1,0 +1,57 @@
+task_name,description,unit_type,mandays_per_unit
+Define Project Scope and Deliverables,Define the scope and deliverables of the chatbot project,One Time,1.0
+Allocate Resources and Assign Roles,Allocate resources and assign roles to team members,One Time,1.0
+Establish Communication Protocols,Establish communication protocols for the project team,One Time,0.5
+Set Up Project Management Tools,Set up project management tools for tracking progress,One Time,0.5
+Set Up Development Environments,Set up development environments for development team,One Time,1.0
+Install Libraries and Frameworks,Install necessary libraries and frameworks for development,One Time,0.5
+Configure Git and CI/CD Pipelines,Configure Git repositories and CI/CD pipelines,One Time,1.0
+Integrate Chatbot with Messaging Platforms,"Integrate chatbot with messaging platforms like Mobile App, WhatsApp, Website, Facebook, Instagram",Per Integration Point,1.0
+Implement Customizable Chat UI Components,Develop customizable chat UI components for the chatbot interface,Per Component,1.0
+Enable Multimedia Upload Support,Implement support for multimedia uploads in chatbot flows,Per Flow Type,0.75
+Develop Intent Classifier,Develop intent classifier for chatbot to understand user intents,Per Intent,1.0
+Implement Named Entity Recognition,Implement NER to extract entities from user inputs,Per Entity,1.0
+Create Canned Message Flows,Develop canned message flows for predefined interactions,Per Flow Type,1.0
+Develop RAG-based Flows,Develop RAG-based flows integrating retrieval augmented generation,Per Flow Type,1.0
+Integrate API Flows,Implement API integration flows for system interactions,Per Flow Type,1.0
+Develop API for Memory Management,Develop middleware API for managing chatbot memory,One Time,1.0
+Implement RAG Data Pipeline (Text),Develop RAG data pipeline for text-based data sources,Per Data Source,1.0
+Implement RAG Data Pipeline (Tabular),Develop RAG data pipeline for tabular data sources,Per Data Source,1.0
+Implement NER,Implement NER models in the chatbot,Per NER,1.0
+Set Up PostgreSQL Database,Set up PostgreSQL database for chatbot data,One Time,1.0
+Set Up FAISS Vector Database,Set up FAISS vector database for vector-based operations,One Time,1.0
+Develop Data Ingestion Scripts,Create scripts for data ingestion into databases,One Time,1.0
+Integrate Multiple AI Models,Integrate multiple AI models into the chatbot system,Per Model,1.0
+Implement Dynamic Model Selection,Implement dynamic selection of AI models based on context,One Time,0.75
+Test AI Models,Conduct testing of integrated AI models for performance,One Time,0.5
+Define LLM Output Policies,Define policies for Large Language Model outputs to ensure compliance,One Time,0.5
+Implement Output Monitoring and Filtering,Implement systems for monitoring and filtering chatbot outputs,One Time,1.0
+Test Guardrailing Effectiveness,Test the effectiveness of guardrailing mechanisms,One Time,0.5
+Implement Language Detection Algorithms,Implement algorithms for detecting user language,One Time,0.5
+Implement Language Translation Services,Implement translation services for supported languages,Per Language,1.0
+Validate Language Processing,Validate the accuracy of language processing capabilities,Per Language,0.5
+Integrate CRM System,Integrate chatbot with CRM system,Per Integration,1.0
+Integrate Live Chat Platform,Integrate chatbot with live chat platforms,Per Integration,1.0
+Integrate Ticketing System,Integrate chatbot with ticketing systems like Zendesk,Per Integration,1.0
+Conduct Unit Testing,Perform unit testing for chatbot components,One Time,0.5
+Conduct Integration Testing,Perform integration testing for chatbot systems,One Time,1.0
+Conduct Performance Testing,Perform performance testing to ensure scalability,One Time,1.0
+Conduct Security Testing,Perform security testing to ensure data protection,One Time,1.0
+Set Up Staging and Production Environments,Set up staging and production environments for deployment,One Time,0.75
+Implement CI/CD Pipeline,Implement continuous integration and continuous deployment pipelines,One Time,1.0
+Deploy System,Deploy the chatbot system to production,One Time,1.0
+Conduct Post-deployment Testing,Perform testing after deployment to ensure stability,One Time,0.5
+Create Technical Documentation,Develop technical documentation for the chatbot system,One Time,1.0
+Create User Manuals and Guides,Create user manuals and guides for end-users,One Time,0.75
+Conduct Staff Training Sessions,Conduct training sessions for staff on using the chatbot,One Time,1.0
+Set Up Chatbot Dashboard,Set up administrative dashboard for chatbot management,One Time,0.75
+Set Up Essential Chatbot Flows,Set up essential chatbot flows for common interactions,One Time,1.0
+Manage Knowledge Base,Manage and update the chatbot's knowledge base,One Time,1.0
+Implement User Management,Implement user management features for chatbot admins,One Time,0.75
+Set Up Campaign Tracking,Set up tracking for chatbot-driven marketing campaigns,One Time,0.75
+Set Up Chat Memory Management,Set up summary and long-term memory management for chatbot,One Time,1.0
+Set Up Server Infrastructure,Set up server infrastructure to handle conversations,One Time,1.0
+Manage LLM Costs,Manage costs associated with Large Language Models,One Time,0.5
+Manage Platform Costs,Manage platform-related costs for chatbot operations,One Time,0.5
+Calculate Input Token Cost,Calculate costs based on input tokens usage,Per 1000 tokens,0.25
+Calculate Output Token Cost,Calculate costs based on output tokens usage,Per 1000 tokens,0.25
