@@ -447,7 +447,8 @@ Format the output as a CSV with these columns:
 task_name, description, unit_type, quantity, mandays_per_unit
    
 - Make sure you encapsulate all TEXT column in "" 
-- Omit ``` code guards and additional commentary."""
+- Just return the csv text and NOTHING else, omit the ``` code guards.
+"""
 
 flare_task_quotationv3= """As an expert AI consultant specializing in task decomposition and project planning, analyze the provided project documentation to create a structured breakdown of tasks. Your analysis should:
 
@@ -481,7 +482,8 @@ Format the output as a CSV with these columns:
 task_name, description, unit_type, mandays_per_unit
    
 - Make sure you encapsulate all TEXT column in "" 
-- Omit ``` code guards and additional commentary."""
+- Just return the csv text and NOTHING else, omit the ``` code guards.
+"""
 
 populate_csv_v1 = """"
 You are an expert AI consultant tasked with cross-referencing a detailed client requirements document and a components/pricing breakdown sheet for a chatbot project. 
@@ -567,3 +569,12 @@ structure_qa = """Rewrite this for clarity while keeping all specific details, m
 Do not include context or assumptions beyond the input provided.
 Structure the document to ensure clarity and logical flow.
 """
+
+quotation_analysis_prompt = """Provide a concise, actionable report for a project manager to evaluate how well the quotation aligns with the project requirements ,identify mismatches between the project requirements and the quotation and recommend improvements.
+
+Inputs
+1.Project Requirements Document
+2.Quotation Details:
+3.Quotation Task List
+
+Write a concise report to highlight the key areas that requires attention. Use tabular format whenever possible"""

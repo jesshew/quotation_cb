@@ -12,8 +12,7 @@ import pandas as pd
 from pathlib import Path
 import os
 from io import StringIO
-
-
+import datetime
 
 load_dotenv()
 api_key = os.getenv("LANGTRACE_API_KEY")
@@ -180,7 +179,7 @@ def recalculate_costs_v3(quantity_df,task_df):
         csv_string = quantity_df.to_csv(index=False)
         task_string = task_df.to_csv(index=False)
         # Insert the quotation into the database
-        insert_quotation(csv_string, total_cost, total_mandays, details= task_string)
+        insert_quotation(csv_string, total_cost, total_mandays, task_breakdown_v3= task_string)
         # df['calculated_mandays'] = df['quantity'] * df['mandays_per_unit']
         # total_mandays = df['calculated_mandays'].sum()
         # total_cost = 1500 * total_mandays
@@ -277,7 +276,10 @@ def map_mandays(df):
 
 def calculate_mandays_and_costs(df):
     try:
-        # df['mandays_per_unit'] = pd.to_numeric(df['mandays_per_unit'].replace('', '0'), errors='coerce').fillna(0)
+        # Hacky way to handle the token counts.
+        # arbitrary number that is large enough to cover the chatflows.
+        df.loc[df['quantity'] > 80, 'mandays_per_unit'] = 0
+
         # Calculate mandays and costs
         df['calculated_mandays'] = df['quantity'] * df['mandays_per_unit']
         total_mandays = df['calculated_mandays'].sum()
@@ -338,7 +340,13 @@ def generate_csv_v2(progress=gr.Progress()):
 def generate_csv_v3(progress=gr.Progress()):
     # Step 1: Rewrite QA
     progress(0, desc="Step 1: Rewriting QA...")
-    structured_qa_result = zus_quotation.rewrite_qa()
+    # structured_qa_result = zus_quotation.rewrite_qa()
+    
+    #save cost lol
+    with open("quotation_8_20241230125827/project_requirement.txt", "r") as file:
+        structured_qa_result = file.read()
+
+    zus_quotation.structured_qa = structured_qa_result
     
     # Step 2: Flare Tasks
     progress(0.33, desc="Step 2: Calling flare tasks...")
@@ -350,15 +358,17 @@ def generate_csv_v3(progress=gr.Progress()):
     task_breakdown_df = pd.read_csv(StringIO(flare_tasks_result))
     quantity_df = pd.read_csv(StringIO(organized_qa_result))
 
-    # df['quantity'] = pd.to_numeric(df['quantity'].replace('', '1'), errors='coerce').fillna(1)
-    # df['mandays_per_unit'] = pd.to_numeric(df['mandays_per_unit'].replace('', '0'), errors='coerce').fillna(0)
-    # df, total_mandays, total_cost = calculate_mandays_and_costs(df)
+    # organized_qa_result['quantity'] = pd.to_numeric(organized_qa_result['quantity'].replace('', '1'), errors='coerce').fillna(1)
+    quantity_df['quantity'] = pd.to_numeric(quantity_df['quantity'].replace('', '1'), errors='coerce').fillna(1)
+    quantity_df['mandays_per_unit'] = pd.to_numeric(quantity_df['mandays_per_unit'].replace('', '0'), errors='coerce').fillna(0)
+    quantity_df, total_mandays, total_cost = calculate_mandays_and_costs(quantity_df)
+    merged_dfs = merge_dfs(task_df= task_breakdown_df,quantity_df= quantity_df)
     # csv_string = df.to_csv(index=False)
 
     # insert_quotation(csv_string, total_cost, total_mandays)
 
     progress(1.0, desc="Complete!")
-    return [task_breakdown_df,quantity_df, "Process completed!", "total_man_days: {total_mandays}\n total_costs:{total_cost}"]
+    return [task_breakdown_df,quantity_df, merged_dfs,"Process completed!", f"total_man_days: {total_mandays}\n total_costs:{total_cost}"]
 
 
 def create_new_session():
@@ -502,7 +512,7 @@ def fetch_session(session_id):
         return "", "", f"Error fetching session: {str(e)}",
         # return "", "", f"Error fetching session: {str(e)}", "", ""
 
-def insert_quotation(csv_string, total_price, total_mandays, note=None, details = None, tier_level=1):
+def insert_quotation(csv_string, total_price, total_mandays, note=None, task_breakdown_v3 = None, tier_level=1):
     """Insert a new quotation into the database with an updated version."""
     try:
         conn = get_db_connection()
@@ -520,20 +530,26 @@ def insert_quotation(csv_string, total_price, total_mandays, note=None, details 
  # Get the next version number
         total_price = float(total_price) if total_price is not None else None
         total_mandays = float(total_mandays) if total_mandays is not None else None
+        structured_details = zus_quotation.structured_qa
         
-        details = f"{json.dumps(zus_quotation.project_detail)} + {details}" if details else json.dumps(zus_quotation.project_detail)
+        # Convert project details to JSON string
+        # Append the task table here, so we know what tasks are not in the quantity table 
+        # (context : v3 function calls it slightly differently, csv_string will be the quantity table)
+        # why ? lazy alter table to add new column, then create a whole new if else statement to handle this 
+        details = f"{json.dumps(zus_quotation.project_detail)} + {task_breakdown_v3}" if task_breakdown_v3 else json.dumps(zus_quotation.project_detail)
             
         # Insert new quotation
         cur.execute("""
-            INSERT INTO quotations (session_id, version, details, quotation_csv, total_price, total_mandays)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO quotations (session_id, version, details, quotation_csv, total_price, total_mandays,structured_details)
+            VALUES (%s, %s, %s, %s, %s, %s,%s)
         """, (
             zus_quotation.session_id,
             version,
-            details,  # Convert project details to JSON string
+            details,  
             csv_string,
             total_price,
-            total_mandays
+            total_mandays,
+            structured_details
         ))
         
         conn.commit()
@@ -546,59 +562,163 @@ def insert_quotation(csv_string, total_price, total_mandays, note=None, details 
     except Exception as e:
         print(f"Error inserting quotation: {str(e)}")
 
-def save_csv(df):
-    """Save the DataFrame as a CSV file."""
+def _create_folder_and_save_csv(df, folder_name, file_name):
+    """Common function to create a folder and save a DataFrame as a CSV file."""
+    os.makedirs(folder_name, exist_ok=True)
     if df is not None:
-        csv_file_path = "task_list.csv"  # Specify your desired file path
+        csv_file_path = os.path.join(folder_name, file_name)
         df.to_csv(csv_file_path, index=False)
-        print(f"CSV saved to {csv_file_path}")
-        return f"CSV saved to {csv_file_path}"
+        return f"{file_name} saved to {csv_file_path}"
     return "No data to save."
 
+def save_csv(df):
+    """Save the DataFrame as a CSV file using _create_folder_and_save_csv."""
+    if df is not None:
+        folder_name = "default_folder"  # Specify your desired folder name
+        file_name = "task_list.csv"  # Specify your desired file name
+        return _create_folder_and_save_csv(df, folder_name, file_name)
+    return "No data to save."
 
-def save_csv_v3(df, df2):
-    """Save the DataFrame as a CSV file."""
-    retval = ""
-    if df is not None :
-        csv_file_path = "task_list.csv"  # Specify your desired file path
-        df.to_csv(csv_file_path, index=False)
-        retval += f"Task CSV saved to {csv_file_path}\n"
-    if df2 is not None :
-        quantity_file_path = "quantity_list.csv"  # Specify your desired file path
-        df2.to_csv(quantity_file_path, index=False)
-        retval += f"Task CSV saved to {quantity_file_path}\n"
+def save_csv_v3(task_df, quantity_df,merged_df):
+    """Save the DataFrame as a CSV file in a new quotation folder using session_id and timestamp."""
+    session_id = zus_quotation.session_id
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    folder_name = f"quotation_{session_id}_{timestamp}"
+    # os.makedirs(folder_name, exist_ok=True)
     
-    with open("project_requirement.txt", "w") as file:
+    retval = ""
+    if task_df is not None:
+        retval += _create_folder_and_save_csv(task_df, folder_name, "task_list.csv")
+    if quantity_df is not None:
+        retval += _create_folder_and_save_csv(quantity_df, folder_name, "quantity_list.csv")
+    if merged_df is not None:
+        retval += _create_folder_and_save_csv(merged_df, folder_name, "merged_df.csv")
+
+    project_requirement_path = os.path.join(folder_name, "project_requirement.txt")
+    with open(project_requirement_path, "w") as file:
         file.write(zus_quotation.structured_qa)
-        retval += f"Project Requirement saved to project_requirement.txt"
+        retval += f"Project Requirement saved to {project_requirement_path}"
 
     if retval:
         return retval
     return "No data to save."
 
+def merge_dfs(task_df, quantity_df):
+
+    # Merge the DataFrames on 'task_name' using an outer join, including all tasks from both DataFrames
+    merged_df = pd.merge(task_df, quantity_df, on='task_name', how='outer', indicator=True)
+
+    # Rename the indicator column to provide clarity on its purpose
+    merged_df.rename(columns={'_merge': 'present_in_both'}, inplace=True)
+    
+    # Rename columns to indicate their source DataFrame for better clarity
+    merged_df.rename(columns={
+        'unit_type_x': 'unit_type_task',  # Rename unit_type_x to unit_type_task (from task DataFrame)
+        'mandays_per_unit_x': 'mandays_per_unit_task',  # Rename mandays_per_unit_x to mandays_per_unit_task (from task DataFrame)
+        'unit_type_y': 'unit_type_quantity',  # Rename unit_type_y to unit_type_quantity (from quantity DataFrame)
+        'mandays_per_unit_y': 'mandays_per_unit_quantity'  # Rename mandays_per_unit_y to mandays_per_unit_quantity (from quantity DataFrame)
+    }, inplace=True)
+
+    # Map the values in the 'present_in_both' column to provide meaningful descriptions
+    merged_df['present_in_both'] = merged_df['present_in_both'].map({
+        'both': 'Present in both',  # Task is present in both DataFrames
+        'left_only': 'Missing from quantity',  # Task is only in the task DataFrame
+        'right_only': 'Missing from task'  # Task is only in the quantity DataFrame
+    })
+
+    # Create a new column to check if the unit types match between the two DataFrames
+    merged_df['unit_type_match'] = merged_df['unit_type_task'] == merged_df['unit_type_quantity']
+    
+    # Create a new column to check if the mandays per unit match between the two DataFrames
+    merged_df['mandays_per_unit_match'] = merged_df['mandays_per_unit_task'] == merged_df['mandays_per_unit_quantity']
+
+    # Return the merged DataFrame with all the new columns
+    return merged_df
+
+def extract_essential_columns(merged_df):
+    # Extract the key columns (to cut token cost, avoid sending redundant stuff that will not add value)
+    essential_columns = merged_df[['task_name', 'description', 'unit_type_task', 'quantity', 'remarks']]
+    return essential_columns.to_csv(index=False)
+
+
+def analyse_quotation(merged_df, cost_summary=None):
+    """Analyze the quotation based on quantity and task data."""
+    try:
+        with open("quotation_8_20241230125827/project_requirement.txt", "r") as file:
+            structured_qa_result = file.read()
+
+        zus_quotation.structured_qa = structured_qa_result
+    
+        extracted_merged_df = extract_essential_columns(merged_df)
+        quotation_analysis = zus_quotation.analyse_quotation(
+            quotation_details=cost_summary, 
+            quotation_table=extracted_merged_df
+        )
+        
+        # Return three values matching the three outputs
+        return (
+            quotation_analysis,  # For analysis_box
+            "Ran Quotation Analysis",  # For progress_update_v3
+            gr.update(visible=True)  # For analysis_box visibility
+        )
+    except Exception as e:
+        return (
+            "",  # Empty analysis
+            f"Error analyzing quotation: {str(e)}",  # Error message
+            gr.update(visible=False)  # Keep hidden on error
+        )
+
+# Add the function to handle saving the quotation with notes
+def save_quotation_with_note(tasks_table_v3,quantity_table_v3,merged_table_v3,units_output_v3,notes_box):
+    # print("tasks_table_v3:", tasks_table_v3)
+    # print("quantity_table_v3:", quantity_table_v3)
+    # print("merged_table_v3:", merged_table_v3)
+    print("units_output_v3:", units_output_v3)
+    # Remove leading and trailing spaces from the string
+    cleaned_units_output_v3 = units_output_v3.strip()
+    # Convert the string to a dictionary
+    # units_output_dict = json.loads(cleaned_units_output_v3)
+    # Extract and assign the values
+    # total_mandays = units_output_dict['total_man_days']
+    # total_price = units_output_dict['total_costs']
+
+    task_csv = tasks_table_v3.to_csv(index=False)
+    quantity_csv = quantity_table_v3.to_csv(index=False)
+
+    zus_quotation.component_csv = quantity_csv
+    structured_details = zus_quotation.structured_qa
+   
+    note = notes_box.value  # Get the note from the notes_box
+
+    insert_quotation(quantity_csv, 1, 1, note=note,task_breakdown_v3=task_csv)
+    return f"Successfully Updated Quotation. SessionID:{zus_quotation.session_id}"
+
+def clear_v3_components():
+    """Clear all V3 components."""
+    df = gr.Dataframe(interactive=True, col_count=7)
+    return df, df, df, "", "",""  # Return empty DataFrames and empty strings for outputs
 
 gr.set_static_paths(["temp/"])
 with gr.Blocks(title="Requirements Gathering Chatbot") as demo:
 
     gr.Markdown("# Requirements Gathering Chatbot")
     with gr.Tab(label= "Main"):
-        gr.Markdown("### Instructions for Use: Two Options")
-        gr.Markdown("1. **Start a New Session**: Begin answering questions for a new project. Ensure to include the original questions in your responses.")
-        gr.Markdown("2. **Load an Existing Project**: Navigate to the **Project Status** tab and select a session using its **Session ID** (e.g., ID: 7) to review previous details.")
-        gr.Markdown("   **Current Limitation**: Cannot add new answers to an existing session.")
+        with gr.Accordion("Instructions - Two Options", open= False):
+            # gr.Markdown("**Two Options**:")
+            gr.Markdown("1. **Start a New Session**: Begin answering questions for a new project. Ensure to include the original questions in your responses.")
+            gr.Markdown("2. **Load an Existing Project**: Navigate to the **Project Status** tab and select a session using its **Session ID** (e.g., ID: 7) to review previous details.")
+            gr.Markdown("   **Current Limitation**: Cannot add new answers to an existing session.")
 
-        gr.Markdown("### Generating a Quotation")
-        gr.Markdown("After completing either Option 1 or 2, scroll down to generate a quotation. There are three ways to generate it:")
-        gr.Markdown("- Calculations are based on **quantity** and **man-days per unit**. You can modify these values and click **Recalculate** to update the cost/man-days.")
-        gr.Markdown("- Alternatively, you can regenerate the quotation by clicking **Generate Quotation** again.")
-        # gr.Markdown("- **Hacky Feature**: A prompt area allows users to give direct instructions for regeneration.")
+            # gr.Markdown(" Generating a Quotation")
+            gr.Markdown("Upon completion of either Option 1 or 2, you can now generate a quotation(v3).")
+            gr.Markdown("- Calculations are based on **quantity** and **man-days per unit**. You can modify these values and click **Recalculate** to update the cost/man-days.")
+            gr.Markdown("- Alternatively, you can regenerate the quotation by clicking **Generate Quotation** again.")
 
-        gr.Markdown("### Features in Development")
-        gr.Markdown("- **Gap Analysis**: Analyze the quotation and project requirements to identify limitations and opportunities.")
+            gr.Markdown("Optional Steps:")
+            gr.Markdown("- **Gap Analysis**: Analyze the quotation and project requirements to identify limitations and opportunities.")
         with gr.Row():
             start_btn = gr.Button("Start New Session")
-            clear_btn = gr.Button("Clear")
-
+            clear_btn = gr.Button("Clear Chat")
         with gr.Row():
             with gr.Row():
                 chatbot = gr.Chatbot(height=510)
@@ -644,12 +764,13 @@ with gr.Blocks(title="Requirements Gathering Chatbot") as demo:
                     # refresh_components_btn = gr.Button("Get Latest Component List")  # New refresh button
         
         with gr.Tab(label= "Quotation Generator V3"):
-            gr.Markdown("Calls API 3 times")
-            gr.Markdown("1. Rewrite Q&A into Sturctured Project Requirement")
-            gr.Markdown("2. Flare Task & Estimated Mandays")
-            gr.Markdown("3. Derive Quantity from Project Requirement and Flared Tasks ")
-            gr.Markdown("** Cant export CSV yet, cause it saves locally for now")
-            gr.Markdown("** If quotation gives insanely high number, check task involving token count. (LLM tend to fill huge numbers on those rows)")
+            with gr.Accordion("V3 Documentation", open= False):
+                gr.Markdown("V3 Calls API 3 times")
+                gr.Markdown("1. Rewrite Q&A into Sturctured Project Requirement")
+                gr.Markdown("2. Flare Task & Estimated Mandays")
+                gr.Markdown("3. Derive Quantity from Project Requirement and Flared Tasks ")
+                gr.Markdown("** Cant export CSV yet, cause it saves locally for now")
+                gr.Markdown("** If quotation gives insanely high number, check task involving token count. (LLM tend to fill huge numbers on those rows)")
 
             #pending Gap Report
             with gr.Row():
@@ -659,18 +780,32 @@ with gr.Blocks(title="Requirements Gathering Chatbot") as demo:
                     tasks_table_v3 = gr.Dataframe(interactive=True, col_count=7)  # New table component
                     gr.Markdown("# Inferred Quantity Table")
                     quantity_table_v3 = gr.Dataframe(interactive=True, col_count=7)  # New table component
-
+                    gr.Markdown("# Merged Table")
+                    merged_table_v3 = gr.Dataframe(interactive=False, col_count=7)  # New table component
+                    analysis_box = gr.Markdown(label="Analysis Result", value="", visible=True, show_copy_button=True )
                 with gr.Column(scale=1):
+                    clear_v3_btn = gr.Button("Clear Components")  # New clear button
                     generate_btn_v3 = gr.Button("Generate Task List V3")  # New button
-                    units_output_v3 = gr.Textbox(label="Cost Summary", lines=3, interactive=False)
                     units_output_v3 = gr.Textbox(label="Cost Summary", lines=3, interactive=False)
                     progress_update_v3 = gr.Textbox(label="Progress Update", lines=2, interactive=False)
                     recalc_btn_v3 = gr.Button("Recalculate")  # New recalculate button
-                    save_csv_btn_v3 = gr.Button("Save CSV")  # New Save CSV button
+                    save_csv_btn_v3 = gr.Button("Save Tables & Project Requirement Files")  # New Save CSV button
+                    analyse_quotation_btn = gr.Button("Analyse Quotation")  # New button
+
+                    # New Textbox for user notes
+                    notes_box = gr.Textbox(label="Notes", lines=3, placeholder="Add your notes here...")  # New notes textbox
+                    
+                    # New button to save quotation with note
+                    save_quotation_btn = gr.Button("Save Quotation with Note")  # New button
+
+            clear_v3_btn.click(
+                fn=clear_v3_components,  # Connect the clear function
+                outputs=[tasks_table_v3, quantity_table_v3, merged_table_v3, progress_update_v3, units_output_v3,analysis_box]  # Clear outputs
+            )
 
             generate_btn_v3.click(
                 fn=generate_csv_v3,  # Assuming the same function is used
-                outputs=[tasks_table_v3,quantity_table_v3, progress_update_v3, units_output_v3]
+                outputs=[tasks_table_v3,quantity_table_v3, merged_table_v3,progress_update_v3, units_output_v3]
             )
 
             recalc_btn_v3.click(
@@ -681,8 +816,14 @@ with gr.Blocks(title="Requirements Gathering Chatbot") as demo:
 
             save_csv_btn_v3.click(
                 fn=save_csv_v3,
-                inputs=[tasks_table_v3,quantity_table_v3],
+                inputs=[tasks_table_v3,quantity_table_v3,merged_table_v3],
                 outputs=progress_update_v3
+            )
+
+            analyse_quotation_btn.click(
+                fn=analyse_quotation,
+                inputs=[merged_table_v3, units_output_v3],
+                outputs=[analysis_box, progress_update_v3, analysis_box]  # Use .visible to control visibility
             )
 
             # save_csv_btn_v3.click(
@@ -690,6 +831,13 @@ with gr.Blocks(title="Requirements Gathering Chatbot") as demo:
             #     inputs=tasks_table_v3,
             #     outputs=progress_update_v3
             # )
+
+            # Connect the button to the function
+            save_quotation_btn.click(
+                fn=save_quotation_with_note,
+                inputs=[tasks_table_v3,quantity_table_v3,merged_table_v3,units_output_v3,notes_box],
+                outputs=progress_update_v3  # You can adjust the output as needed
+            )
 
     # Replace single textbox with separate components
     with gr.Tab(label= "Project Status"):
